@@ -1,0 +1,9 @@
+{
+  "name": "com.lumina.native_host",
+  "description": "Lumina Native Messaging Proxy Host",
+  "path": "lumina_host.bat",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://YOUR_EXTENSION_ID_HERE/"
+  ]
+}

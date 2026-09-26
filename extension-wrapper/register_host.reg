@@ -1,0 +1,4 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Google\Chrome\NativeMessagingHosts\com.lumina.native_host]
+@="C:\\projects\\lumina\\extension-wrapper\\com.lumina.native_host.json"
