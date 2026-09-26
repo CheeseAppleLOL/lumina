@@ -54,6 +54,7 @@ working directory (absolute_path), with ".." left for the walk to take
 physically, exactly as the kernel will when the recorded paths are used.
 """
 from __future__ import annotations
+import sys
 
 import hashlib
 import json
@@ -73,8 +74,13 @@ STATE_VERSION = 1
 # Linux sun_path is 108 bytes including the terminating NUL.
 MAX_SOCKET_PATH_BYTES = 107
 _CLOEXEC = getattr(os, "O_CLOEXEC", 0)
-_OPEN_DIR_FLAGS = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | _CLOEXEC
-_NEW_FILE_FLAGS = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | _CLOEXEC
+if sys.platform == "win32":
+    _OPEN_DIR_FLAGS = getattr(os, "O_RDONLY", 0) | getattr(os, "O_BINARY", 0)
+    _NEW_FILE_FLAGS = getattr(os, "O_WRONLY", 0) | getattr(os, "O_CREAT", 0) | getattr(os, "O_EXCL", 0) | getattr(os, "O_BINARY", 0)
+else:
+    _CLOEXEC = getattr(os, "O_CLOEXEC", 0)
+    _OPEN_DIR_FLAGS = (getattr(os, "O_RDONLY", 0) | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0) | _CLOEXEC)
+    _NEW_FILE_FLAGS = (getattr(os, "O_WRONLY", 0) | getattr(os, "O_CREAT", 0) | getattr(os, "O_EXCL", 0) | getattr(os, "O_NOFOLLOW", 0) | _CLOEXEC)
 _TEMP_ATTEMPTS = 16
 
 
